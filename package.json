@@ -10,7 +10,7 @@
     "postinstall": "./patch-doc-template.sh"
   },
   "dependencies": {
-    "documentation-template": "^1.0.0",
+    "documentation-template": "^1.0.1",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.462.0",
     "react": "^19.2.0",
