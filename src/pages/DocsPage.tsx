@@ -1,5 +1,10 @@
 import { Docs, loadDocs } from 'documentation-template';
-import { Book, Zap, Network, Activity, Shield, Terminal } from 'lucide-react';
+
+declare module 'import.meta' {
+  interface MetaGlob {
+    glob(pattern: string, options?: { query?: string; import?: string; eager?: boolean }): Record<string, unknown>;
+  }
+}
 
 const modules = import.meta.glob('/stageflow-docs/**/*.md', {
   query: '?raw',
@@ -82,7 +87,6 @@ const stageflowDocsConfig = {
   description: 'A DAG-based pipeline orchestration framework for building observable, composable stage pipelines in Python',
   logo: { 
     text: 'Stageflow',
-    icon: <Network className="w-5 h-5" />
   },
   navigation: [
     {
@@ -191,37 +195,31 @@ export function DocsPage() {
             title: 'DAG Execution',
             description: 'Stages run in parallel as soon as dependencies resolve. Maximum throughput with minimal latency.',
             href: '/docs/getting-started/concepts',
-            icon: <Network className="h-5 h-5" />,
           },
           {
             title: 'Interceptor Pattern',
             description: 'Add cross-cutting concerns like timeouts, retries, and circuit breakers without modifying stages.',
             href: '/docs/guides/interceptors',
-            icon: <Shield className="h-5 h-5" />,
           },
           {
             title: 'Observable by Design',
             description: 'Structured events, correlation IDs, and built-in tracing for complete visibility.',
             href: '/docs/guides/observability',
-            icon: <Activity className="h-5 h-5" />,
           },
           {
             title: 'Async-First',
             description: 'Built on asyncio for high-performance concurrent execution.',
             href: '/docs/getting-started/concepts',
-            icon: <Zap className="h-5 h-5" />,
           },
           {
             title: 'Comprehensive Examples',
             description: 'From simple transforms to complex multi-agent systems.',
             href: '/docs/examples/simple',
-            icon: <Terminal className="h-5 h-5" />,
           },
           {
             title: 'Zero Dependencies',
             description: 'Core library has no external dependencies. You choose your runtime.',
             href: '/docs/getting-started/installation',
-            icon: <Book className="h-5 h-5" />,
           },
         ]
       }}
