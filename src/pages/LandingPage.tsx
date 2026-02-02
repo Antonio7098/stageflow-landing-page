@@ -121,7 +121,7 @@ export function LandingPage() {
       <CTABanner
         variant="gradient"
         action={
-          <a href="/docs" className="text-white/90 hover:text-white flex items-center gap-1 text-sm font-medium">
+          <a href="/docs/getting-started/installation" className="text-white/90 hover:text-white flex items-center gap-1 text-sm font-medium">
             Read the docs <ArrowRight className="w-4 h-4" />
           </a>
         }
@@ -142,9 +142,9 @@ export function LandingPage() {
           {
             label: 'Documentation',
             children: [
-              { label: 'Getting Started', href: '/docs/getting-started/quickstart' },
-              { label: 'API Reference', href: '/docs/api/core' },
-              { label: 'Examples', href: '/docs/examples/simple' },
+              { label: 'Getting Started', href: '/docs/getting-started/installation' },
+              { label: 'API Reference', href: '/docs/getting-started/installation' },
+              { label: 'Examples', href: '/docs/getting-started/installation' },
             ],
           },
         ]}
@@ -180,7 +180,7 @@ export function LandingPage() {
           },
           {
             label: 'Read the Docs',
-            href: '/docs',
+            href: '/docs/getting-started/installation',
             variant: 'ghost',
             icon: <ArrowRight className="w-4 h-4" />,
             iconPosition: 'right',
@@ -221,7 +221,7 @@ export function LandingPage() {
               </p>
 
               <div className="flex flex-wrap gap-4 mb-12">
-                <NavButton variant="primary" href="/docs">
+                <NavButton variant="primary" href="/docs/getting-started/installation">
                   Read the Docs
                 </NavButton>
                 <NavButton variant="ghost" href="https://github.com/Antonio7098/stageflow" icon={<Github className="w-4 h-4" />}>
@@ -407,7 +407,7 @@ export function LandingPage() {
         gradient="cyan-blue"
         actions={[
           { label: 'pip install stageflow', href: '/docs/getting-started/installation', variant: 'primary' },
-          { label: 'Read the Docs', href: '/docs', variant: 'outline' },
+          { label: 'Read the Docs', href: '/docs/getting-started/installation', variant: 'outline' },
         ]}
       />
 
@@ -426,15 +426,15 @@ export function LandingPage() {
             title: 'Product',
             links: [
               { label: 'Features', href: '/#features' },
-              { label: 'Getting Started', href: '/docs/getting-started/quickstart' },
-              { label: 'Examples', href: '/docs/examples/simple' },
+              { label: 'Getting Started', href: '/docs/getting-started/installation' },
+              { label: 'Examples', href: '/docs/getting-started/installation' },
             ],
           },
           {
             title: 'Resources',
             links: [
-              { label: 'Documentation', href: '/docs' },
-              { label: 'API Reference', href: '/docs/api/core' },
+              { label: 'Documentation', href: '/docs/getting-started/installation' },
+              { label: 'API Reference', href: '/docs/getting-started/installation' },
               { label: 'GitHub', href: 'https://github.com/Antonio7098/stageflow' },
             ],
           },

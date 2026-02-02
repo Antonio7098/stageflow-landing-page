@@ -10,8 +10,9 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/docs" element={<Navigate to="/docs/getting-started/installation" replace />} />
         <Route path="/docs/*" element={<DocsPage />} />
-        <Route path="*" element={<Navigate to="/docs" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
