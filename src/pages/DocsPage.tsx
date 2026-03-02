@@ -82,6 +82,77 @@ const docs = rawDocs
   });
 
 
+const titleOverrides: Record<string, string> = {
+  // Guides
+  '/guides/pipelines': 'Pipelines',
+  '/guides/duplex-systems': 'Duplex Systems',
+  '/guides/stages': 'Stages',
+  '/guides/dependencies': 'Dependencies',
+  '/guides/interceptors': 'Interceptors',
+  '/guides/context': 'Context',
+  '/guides/tools': 'Tools',
+  '/guides/observability': 'Observability',
+  '/guides/authentication': 'Authentication',
+  '/guides/governance': 'Governance',
+  '/guides/enrich': 'Enrich',
+  '/guides/timestamps': 'Timestamps',
+  '/guides/releasing': 'Releasing',
+  '/guides/voice-audio': 'Voice & Audio',
+  '/guides/websearch': 'Web Search',
+  '/guides/tools-approval': 'Tools Approval',
+  // API
+  '/api/core': 'Core',
+  '/api/pipeline': 'Pipeline',
+  '/api/context': 'Context',
+  '/api/inputs': 'Inputs',
+  '/api/interceptors': 'Interceptors',
+  '/api/tools': 'Tools',
+  '/api/events': 'Events',
+  '/api/observability': 'Observability',
+  '/api/projector': 'Projector',
+  '/api/helpers': 'Helpers',
+  '/api/protocols': 'Protocols',
+  '/api/cli': 'CLI',
+  '/api/auth': 'Auth',
+  '/api/testing': 'Testing',
+  '/api/context-submodules': 'Context Submodules',
+  '/api/wide-events': 'Wide Events',
+  // Advanced
+  '/advanced/testing': 'Testing',
+  '/advanced/error-handling': 'Error Handling',
+  '/advanced/error-messages': 'Error Messages',
+  '/advanced/context-management': 'Context Management',
+  '/advanced/extensions': 'Extensions',
+  '/advanced/retry-backoff': 'Retry & Backoff',
+  '/advanced/hardening': 'Hardening',
+  '/advanced/checkpointing': 'Checkpointing',
+  '/advanced/chunking': 'Chunking',
+  '/advanced/custom-interceptors': 'Custom Interceptors',
+  '/advanced/composition': 'Composition',
+  '/advanced/subpipelines': 'Subpipelines',
+  '/advanced/saga-pattern': 'Saga Pattern',
+  '/advanced/tool-sandboxing': 'Tool Sandboxing',
+  '/advanced/idempotency': 'Idempotency',
+  '/advanced/guard-security': 'Guard Security',
+  '/advanced/routing-confidence': 'Routing Confidence',
+  '/advanced/routing-loops': 'Routing Loops',
+  '/advanced/knowledge-verification': 'Knowledge Verification',
+  // Examples
+  '/examples/simple': 'Simple',
+  '/examples/chat': 'Chat',
+  '/examples/parallel': 'Parallel',
+  '/examples/transform-chain': 'Transform Chain',
+  '/examples/agent-tools': 'Agent Tools',
+  '/examples/multi-hop-rag': 'Multi-hop RAG',
+  '/examples/ab-testing': 'A/B Testing',
+  '/examples/multimodal-fusion': 'Multimodal Fusion',
+  '/examples/full': 'Full Example',
+  // Getting Started
+  '/getting-started/installation': 'Installation',
+  '/getting-started/quickstart': 'Quick Start',
+  '/getting-started/concepts': 'Core Concepts',
+};
+
 function buildNavigation(docList: ReturnType<typeof rawDocs>): typeof stageflowDocsConfig.navigation {
   const sections: Record<string, { title: string; href: string }[]> = {};
   const order: Record<string, number> = {
@@ -92,17 +163,27 @@ function buildNavigation(docList: ReturnType<typeof rawDocs>): typeof stageflowD
     'advanced': 5,
   };
 
+  const guideWithAdvanced = ['duplex-systems'];
+
   for (const doc of docList) {
     const match = doc.slug.match(/^\/([^/]+)\/([^/]+)$/);
     if (!match) continue;
 
     const [, section, page] = match;
+    
+    const title = titleOverrides[doc.slug] ?? doc.meta?.title ?? page.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    
     if (!sections[section]) {
       sections[section] = [];
     }
-
-    const title = doc.meta?.title ?? page.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     sections[section].push({ title, href: `/docs${doc.slug}` });
+
+    if (section === 'guides' && guideWithAdvanced.includes(page)) {
+      if (!sections['advanced']) {
+        sections['advanced'] = [];
+      }
+      sections['advanced'].push({ title, href: `/docs${doc.slug}` });
+    }
   }
 
   const sectionTitles: Record<string, string> = {
