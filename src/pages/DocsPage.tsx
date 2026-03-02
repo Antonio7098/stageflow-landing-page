@@ -173,17 +173,12 @@ function buildNavigation(docList: ReturnType<typeof rawDocs>): typeof stageflowD
     
     const title = titleOverrides[doc.slug] ?? doc.meta?.title ?? page.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     
-    if (!sections[section]) {
-      sections[section] = [];
+    const targetSection = (section === 'guides' && guideWithAdvanced.includes(page)) ? 'advanced' : section;
+    
+    if (!sections[targetSection]) {
+      sections[targetSection] = [];
     }
-    sections[section].push({ title, href: `/docs${doc.slug}` });
-
-    if (section === 'guides' && guideWithAdvanced.includes(page)) {
-      if (!sections['advanced']) {
-        sections['advanced'] = [];
-      }
-      sections['advanced'].push({ title, href: `/docs${doc.slug}` });
-    }
+    sections[targetSection].push({ title, href: `/docs${doc.slug}` });
   }
 
   const sectionTitles: Record<string, string> = {
