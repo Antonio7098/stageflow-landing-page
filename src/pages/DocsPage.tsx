@@ -82,101 +82,53 @@ const docs = rawDocs
   });
 
 
+function buildNavigation(docList: ReturnType<typeof rawDocs>): typeof stageflowDocsConfig.navigation {
+  const sections: Record<string, { title: string; href: string }[]> = {};
+  const order: Record<string, number> = {
+    'getting-started': 1,
+    'guides': 2,
+    'api': 3,
+    'examples': 4,
+    'advanced': 5,
+  };
+
+  for (const doc of docList) {
+    const match = doc.slug.match(/^\/([^/]+)\/([^/]+)$/);
+    if (!match) continue;
+
+    const [, section, page] = match;
+    if (!sections[section]) {
+      sections[section] = [];
+    }
+
+    const title = doc.meta?.title ?? page.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    sections[section].push({ title, href: doc.slug });
+  }
+
+  const sectionTitles: Record<string, string> = {
+    'getting-started': 'Getting Started',
+    'guides': 'Guides',
+    'api': 'API Reference',
+    'examples': 'Examples',
+    'advanced': 'Advanced',
+  };
+
+  return Object.entries(sections)
+    .sort(([a], [b]) => (order[a] ?? 99) - (order[b] ?? 99))
+    .map(([section, children]) => ({
+      title: sectionTitles[section] ?? section.charAt(0).toUpperCase() + section.slice(1),
+      children: children.sort((a, b) => a.title.localeCompare(b.title)),
+    }));
+}
+
+
 const stageflowDocsConfig = {
   name: 'Stageflow Documentation',
   description: 'A DAG-based pipeline orchestration framework for building observable, composable stage pipelines in Python',
   logo: { 
     text: 'Stageflow',
   },
-  navigation: [
-    {
-      title: 'Getting Started',
-      children: [
-        { title: 'Installation', href: '/docs/getting-started/installation' },
-        { title: 'Quick Start', href: '/docs/getting-started/quickstart' },
-        { title: 'Core Concepts', href: '/docs/getting-started/concepts' },
-      ]
-    },
-    {
-      title: 'Guides',
-      children: [
-        { title: 'Pipelines', href: '/docs/guides/pipelines' },
-        { title: 'Stages', href: '/docs/guides/stages' },
-        { title: 'Dependencies', href: '/docs/guides/dependencies' },
-        { title: 'Interceptors', href: '/docs/guides/interceptors' },
-        { title: 'Context', href: '/docs/guides/context' },
-        { title: 'Tools', href: '/docs/guides/tools' },
-        { title: 'Observability', href: '/docs/guides/observability' },
-        { title: 'Authentication', href: '/docs/guides/authentication' },
-        { title: 'Governance', href: '/docs/guides/governance' },
-        { title: 'Enrich', href: '/docs/guides/enrich' },
-        { title: 'Timestamps', href: '/docs/guides/timestamps' },
-        { title: 'Releasing', href: '/docs/guides/releasing' },
-        { title: 'Voice & Audio', href: '/docs/guides/voice-audio' },
-        { title: 'Web Search', href: '/docs/guides/websearch' },
-        { title: 'Tools Approval', href: '/docs/guides/tools-approval' },
-      ]
-    },
-    {
-      title: 'API Reference',
-      children: [
-        { title: 'Core', href: '/docs/api/core' },
-        { title: 'Pipeline', href: '/docs/api/pipeline' },
-        { title: 'Context', href: '/docs/api/context' },
-        { title: 'Inputs', href: '/docs/api/inputs' },
-        { title: 'Interceptors', href: '/docs/api/interceptors' },
-        { title: 'Tools', href: '/docs/api/tools' },
-        { title: 'Events', href: '/docs/api/events' },
-        { title: 'Observability', href: '/docs/api/observability' },
-        { title: 'Projector', href: '/docs/api/projector' },
-        { title: 'Helpers', href: '/docs/api/helpers' },
-        { title: 'Protocols', href: '/docs/api/protocols' },
-        { title: 'CLI', href: '/docs/api/cli' },
-        { title: 'Auth', href: '/docs/api/auth' },
-        { title: 'Testing', href: '/docs/api/testing' },
-        { title: 'Context Submodules', href: '/docs/api/context-submodules' },
-        { title: 'Wide Events', href: '/docs/api/wide-events' },
-      ]
-    },
-    {
-      title: 'Advanced',
-      children: [
-        { title: 'Testing', href: '/docs/advanced/testing' },
-        { title: 'Error Handling', href: '/docs/advanced/errors' },
-        { title: 'Error Messages', href: '/docs/advanced/error-messages' },
-        { title: 'Context Management', href: '/docs/advanced/context-management' },
-        { title: 'Extensions', href: '/docs/advanced/extensions' },
-        { title: 'Retry & Backoff', href: '/docs/advanced/retry-backoff' },
-        { title: 'Hardening', href: '/docs/advanced/hardening' },
-        { title: 'Checkpointing', href: '/docs/advanced/checkpointing' },
-        { title: 'Chunking', href: '/docs/advanced/chunking' },
-        { title: 'Custom Interceptors', href: '/docs/advanced/custom-interceptors' },
-        { title: 'Composition', href: '/docs/advanced/composition' },
-        { title: 'Subpipelines', href: '/docs/advanced/subpipelines' },
-        { title: 'Saga Pattern', href: '/docs/advanced/saga-pattern' },
-        { title: 'Tool Sandboxing', href: '/docs/advanced/tool-sandboxing' },
-        { title: 'Idempotency', href: '/docs/advanced/idempotency' },
-        { title: 'Guard Security', href: '/docs/advanced/guard-security' },
-        { title: 'Routing Confidence', href: '/docs/advanced/routing-confidence' },
-        { title: 'Routing Loops', href: '/docs/advanced/routing-loops' },
-        { title: 'Knowledge Verification', href: '/docs/advanced/knowledge-verification' },
-      ]
-    },
-    {
-      title: 'Examples',
-      children: [
-        { title: 'Simple', href: '/docs/examples/simple' },
-        { title: 'Chat', href: '/docs/examples/chat' },
-        { title: 'Parallel', href: '/docs/examples/parallel' },
-        { title: 'Transform Chain', href: '/docs/examples/transform-chain' },
-        { title: 'Agent Tools', href: '/docs/examples/agent-tools' },
-        { title: 'Multi-hop RAG', href: '/docs/examples/multi-hop-rag' },
-        { title: 'A/B Testing', href: '/docs/examples/ab-testing' },
-        { title: 'Multimodal Fusion', href: '/docs/examples/multimodal-fusion' },
-        { title: 'Full Example', href: '/docs/examples/full' },
-      ]
-    }
-  ],
+  navigation: buildNavigation(docs),
   search: {
     enabled: true,
     placeholder: 'Search Stageflow documentation...'
