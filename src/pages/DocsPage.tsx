@@ -102,7 +102,7 @@ function buildNavigation(docList: ReturnType<typeof rawDocs>): typeof stageflowD
     }
 
     const title = doc.meta?.title ?? page.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    sections[section].push({ title, href: doc.slug });
+    sections[section].push({ title, href: `/docs${doc.slug}` });
   }
 
   const sectionTitles: Record<string, string> = {
